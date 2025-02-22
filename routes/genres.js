@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { handleServerError, handleNotFoundError, handlePartialMatchError } = require('../helpers/errorHandlers');
+
 
 // Returns all the genres with all eras fields
 router.get('/genres', async (req, res) => {
@@ -21,13 +23,13 @@ router.get('/genres/:genreId', async (req, res) => {
             .eq('genreId', genreId)
 
         if (data.length === 0) {
-            return res.status(404).json({message: `No genre exist with the genreId: ${genreId}`});
+            return handleNotFoundError(res, 'genre', 'genreId', genreId);
         }
 
         res.send(data);
 
     } catch (error) {
-        res.status(500).json({error: `specified genreId not found`});
+        return handleServerError(res, "failed to retrieve the genres")
     }
 });
 
@@ -42,13 +44,13 @@ router.get('/genres/painting/:paintingId', async (req, res) => {
             .order('genreName', {ascending: true})
 
         if (data.length === 0) {
-            return res.status(404).json({message: `No genre exist with the genreId: ${paintingId}`});
+            return handleNotFoundError(res, 'genre', 'paintingId', paintingId);
         }
 
         res.send(data);
 
     } catch (error) {
-        res.status(500).json({error: `specified paintingId not found`});
+        return handleServerError(res, "failed to retrieve the genres")
     }
 });
 
@@ -69,7 +71,7 @@ router.get('/counts/genres', async (req, res) => {
         res.send(genrePaintingCounts);
 
     } catch {
-        res.status(500).json({error: `genres and count not found`});
+        return handleServerError(res, "failed to retrieve the genres")
     }
 });
 
@@ -101,7 +103,7 @@ router.get('/counts/topgenres/:limit', async (req, res) => {
         res.send(filteredGenres);
 
     } catch {
-        res.status(500).json({error: error.message});
+        return handleServerError(res, "failed to retrieve the genres")
     }
 });
 

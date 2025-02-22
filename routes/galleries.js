@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { handleServerError, handleNotFoundError, handlePartialMatchError } = require('../helpers/errorHandlers');
 
 
 // Returns all the galleries
@@ -22,11 +23,11 @@ router.get('/galleries/:galleryId', async (req, res) => {
             .eq('galleryId', `${galleryId}`)
 
         if (data.length === 0) {
-            return res.status(404).json({message: `No galleries found for the specificed galleryID: ${galleryId}`});
+            return handleNotFoundError(res, 'galleries', 'galleryId', galleryId);
         }
         res.send(data);
     } catch (error) {
-        res.status(500).json({ error: `specified gallery not found` });
+        return handleServerError(res, "failed to retrieve the galleries")
     }
 });
 
@@ -42,12 +43,13 @@ router.get('/galleries/country/:substring', async (req, res) => {
             .ilike('galleryCountry', `${substring}%`)
 
             if (data.length === 0) {
+                return handlePartialMatchError(res, 'galleries', 'country', 'starting: ', substring)
                 return res.status(404).json({ message: `No galleries found for the specified country starting with ${substring}.` });
         }
 
     res.send(data);
     } catch {
-        res.status(500).json({ error: `specified gallery not found` });
+        return handleServerError(res, "failed to retrieve the galleries")
     } 
 });
 

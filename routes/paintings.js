@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { handleServerError, handleNotFoundError, handlePartialMatchError, handleMultipleYearError, handleYearError } = require('../helpers/errorHandlers');
 
 
 //  Returns all the paintings including all fields for artist and gallery sort by title
@@ -15,7 +16,7 @@ router.get('/paintings', async (req, res) => {
             
         res.send(data);
     } catch {
-        res.status(500).json({error : error.message});
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 });
 
@@ -44,7 +45,7 @@ router.get('/paintings/sort/:field', async (req, res) => {
             
         res.send(data);
     } catch {
-        res.status(500).json({error : error.message});
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 });
 
@@ -62,13 +63,13 @@ router.get('/paintings/:id', async (req, res) => {
             .eq('paintingId', id)
             
         if (data.length === 0) {
-            return res.status(404).json({message: `No paintings is found with the id ${id}`});
+            return handleNotFoundError(res, 'paintings', 'paintingId', id);
         }
 
         res.send(data);
 
     } catch (error) {
-        res.status(500).json({error : `specified painting not found`});
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 });
 
@@ -87,13 +88,13 @@ router.get('/paintings/search/:title', async (req, res) => {
             .order('title', { ascending: true })
             
         if (data.length === 0) {
-            return res.status(404).json({message: `No paintings is found with the title ${title}`});
+            return handlePartialMatchError(res, 'paintings', 'title', 'that contains the values', title);
         }
 
         res.send(data);
 
     } catch (error) {
-        res.status(500).json({error : `specified painting not found`});
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 });
 
@@ -112,16 +113,16 @@ router.get('/paintings/years/:start/:end', async (req, res) => {
             .order('yearOfWork', { ascending: true })
             
         if (parseInt(start) > parseInt(end)) {
-            return res.status(404).json({message: `start year can not be greater than end year`});
+            return handleYearError(res);
         }
 
         if (data.length === 0) {
-            return res.status(404).json({message: `No paintings is found with the years ${start} and ${end}`});
+            return handleMultipleYearError(res, 'paintings', start, end);
         }
 
         res.send(data);
     } catch (error) {
-        res.status(500).json({error : `specified paintings not found`});
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 });
 
@@ -140,13 +141,13 @@ router.get('/paintings/galleries/:galleryId', async (req, res) => {
             .order('title', { ascending: true })
     
         if (data.length === 0) {
-            return res.status(404).json({message: `No paintings exist with the galleryId: ${galleryId}`});
+            return handleNotFoundError(res, 'paintings', 'galleryId', galleryId);
         }
 
         res.send(data);
 
     }  catch (error) {
-        res.status(500).json({error: `specified gallery not found`});
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 
 });
@@ -166,13 +167,13 @@ router.get('/paintings/artist/:artistId', async (req, res) => {
         .order('title', { ascending: true })
 
         if (data.length === 0) {
-            return res.status(404).json({message: `No paintings exist with the artistId: ${artistId}`})
+            return handleNotFoundError(res, 'paintings', 'artistId', artistId);
         }
 
         res.send(data);
 
     } catch (error) {
-        res.status(500).json({error: `specified artistId not found`});
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 
 });
@@ -191,13 +192,12 @@ router.get('/paintings/artists/country/:nationality', async (req, res) => {
             .order('title', { ascending: true })
 
         if (data.length === 0) {
-            return res.status(404).json({ message: `No paintings exist with the nationality: ${nationality}` })
+            return handlePartialMatchError(res, 'paintings', 'nationality', 'starting', nationality);
         }
-
         res.send(data);
 
     } catch (error) {
-        res.status(500).json({ error: `specified nationality not found` });
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 });
 
@@ -213,13 +213,13 @@ router.get('/paintings/genre/:genreId', async (req, res) => {
             .order('yearOfWork', {ascending: true})
         
         if (data.length === 0) {
-            return res.status(404).json({message: `No paintings exist with the genreId: ${genreId}`});
+            return handleNotFoundError(res, 'paintings', 'genreId', genreId);
         }
 
         res.send(data);
 
     } catch (error) {
-        res.status(500).json({error: `specified genreId not found`});
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 });
 
@@ -244,12 +244,12 @@ router.get('/paintings/era/:eraId', async (req, res) => {
 
 
         if (paintingEras.length === 0) {
-            return res.status(404).json({message: `No paintings exist with the eraId: ${eraId}`});
+            return handleNotFoundError(res, 'paintings', 'eraId', eraId);
         }
         
         res.send(paintingEras);
     } catch {
-        res.status(500).json({error: `specified eraId not found`});
+        return handleServerError(res, "failed to retrieve the paintings")
     }
 });
 

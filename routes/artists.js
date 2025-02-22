@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { handleServerError, handleNotFoundError, handlePartialMatchError } = require('../helpers/errorHandlers');
+
 
 //  Returns all the artists
 router.get('/artists', async (req, res) => {
@@ -21,12 +23,12 @@ router.get('/artists/:artistId', async (req, res) => {
             .eq('artistId', artistId)
 
         if (data.length === 0) {
-            return res.status(404).json({message: `No artist has been found with the artistId: ${artistId}`});
+            return handleNotFoundError(res, 'Artist', 'artistId', artistId);
         }
 
         res.send(data);
     } catch (error) {
-        res.status(500).json({ error: `specified artist not found` });
+        return handleServerError(res, 'Failed to retrieve the artist');
     }
 
 });
@@ -43,13 +45,13 @@ router.get('/artists/search/:lastname', async (req, res) => {
             .ilike('lastName', `${lastname}%`)
 
         if (data.length === 0) {
-            return res.status(404).json({message: `No artist has the lastname starting with ${lastname}`});
+            return handlePartialMatchError(res, 'Artist', 'lastname', 'starting', lastname);
         }
 
         res.send(data);
 
     } catch (error) {
-        res.status(500).json({ error: `specified artist not found` });
+        return handleServerError(res, 'Failed to retrieve the artist');
     }
 });
 
@@ -71,7 +73,7 @@ router.get('/artists/country/:nationality', async (req, res) => {
         res.send(data);
 
     } catch (error) {
-        res.status(505).json({ error: `specified artist not found` });
+        handleServerError(res, 'Failed to retrieve the artist');
     }
 });
 
@@ -92,4 +94,6 @@ router.get('/counts/artists', async (req, res) => {
     ArtistPaintingCounts.sort((a, b) => b.paintingCount - a.paintingCount);
     res.send(ArtistPaintingCounts);
 });
+
+
 module.exports = router;
