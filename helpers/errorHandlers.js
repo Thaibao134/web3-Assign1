@@ -17,7 +17,7 @@ function handlePartialMatchError(res, entity, type, match, value) {
 /**
  * handle errors involving ranges in years where entities are not found
  */
-function handleMultipleYearError(res, start, end) {
+function handleMultipleYearError(res, entity, start, end) {
     return res.status(400).json({
         message: `No ${entity} has been found within the years ${start} to ${end}.`
     })
@@ -38,9 +38,6 @@ function handleServerError(res, message) {
         error: message
     });
 }
-
-
-
 
 module.exports = {
     handleNotFoundError,

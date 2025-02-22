@@ -2,16 +2,19 @@ const express = require('express');
 const router = express.Router();
 const { handleServerError, handleNotFoundError, handlePartialMatchError, handleMultipleYearError, handleYearError } = require('../helpers/errorHandlers');
 
+// includes all paintingColumns excluding foreign keys, and includes all columns from the artist and gallery fields.
+const paintingColumns =`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber, 
+                      copyrightText, description, excerpt, yearOfWork, width, height, medium, cost, 
+                      MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists (*), galleries (*)` 
 
+                      
 //  Returns all the paintings including all fields for artist and gallery sort by title
 router.get('/paintings', async (req, res) => {
 
     try {
         const { data, error } = await req.app.get('supabase')
             .from('paintings')
-            .select(`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber,
-                copyrightText, description, excerpt, yearOfWork, width, height, medium, cost,
-                MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists (*), galleries (*)`)
+            .select(paintingColumns)
             .order('title', { ascending: true })
             
         res.send(data);
@@ -38,9 +41,7 @@ router.get('/paintings/sort/:field', async (req, res) => {
     try {
         const { data, error } = await req.app.get('supabase')
             .from('paintings')
-            .select(`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber,
-                copyrightText, description, excerpt, yearOfWork, width, height, medium, cost,
-                MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists (*), galleries (*)`)
+            .select(paintingColumns)
             .order(SortingField[field], { ascending: true })
             
         res.send(data);
@@ -57,9 +58,7 @@ router.get('/paintings/:id', async (req, res) => {
     try {
         const { data, error } = await req.app.get('supabase')
             .from('paintings')
-            .select(`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber,
-                copyrightText, description, excerpt, yearOfWork, width, height, medium, cost,
-                MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists (*), galleries (*)`)
+            .select(paintingColumns)
             .eq('paintingId', id)
             
         if (data.length === 0) {
@@ -81,9 +80,7 @@ router.get('/paintings/search/:title', async (req, res) => {
     try {
         const { data, error } = await req.app.get('supabase')
             .from('paintings')
-            .select(`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber,
-                copyrightText, description, excerpt, yearOfWork, width, height, medium, cost,
-                MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists (*), galleries (*)`)
+            .select(paintingColumns)
             .ilike('title', `%${title}%`)
             .order('title', { ascending: true })
             
@@ -105,9 +102,7 @@ router.get('/paintings/years/:start/:end', async (req, res) => {
     try {
         const { data, error } = await req.app.get('supabase')
             .from('paintings')
-            .select(`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber,
-                copyrightText, description, excerpt, yearOfWork, width, height, medium, cost,
-                MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists (*), galleries (*)`)
+            .select(paintingColumns)
             .gte('yearOfWork', start)
             .lte('yearOfWork', end)
             .order('yearOfWork', { ascending: true })
@@ -122,6 +117,7 @@ router.get('/paintings/years/:start/:end', async (req, res) => {
 
         res.send(data);
     } catch (error) {
+        console.error(error)
         return handleServerError(res, "failed to retrieve the paintings")
     }
 });
@@ -134,9 +130,7 @@ router.get('/paintings/galleries/:galleryId', async (req, res) => {
     try {
         const { data, error } = await req.app.get('supabase')
             .from('paintings')
-            .select(`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber,
-                copyrightText, description, excerpt, yearOfWork, width, height, medium, cost,
-                MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists (*), galleries (*)`)
+            .select(paintingColumns)
             .eq('galleryId', galleryId)
             .order('title', { ascending: true })
     
@@ -160,9 +154,7 @@ router.get('/paintings/artist/:artistId', async (req, res) => {
     try {
         const { data, error } = await req.app.get('supabase')
         .from('paintings')
-        .select(`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber,
-            copyrightText, description, excerpt, yearOfWork, width, height, medium, cost,
-            MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists (*), galleries (*)`)
+        .select(paintingColumns)
         .eq('artistId', artistId)
         .order('title', { ascending: true })
 
@@ -178,16 +170,18 @@ router.get('/paintings/artist/:artistId', async (req, res) => {
 
 });
 
+
+//FIX THIS
 // Returns all the paintings by artists whose nationality begins with the provided substring order by title
-router.get('/paintings/artists/country/:nationality', async (req, res) => {
+router.get('/paintings/artist/country/:nationality', async (req, res) => {
     const { nationality } = req.params
 
     try {
         const { data, error } = await req.app.get('supabase')
             .from('paintings')
-            .select(`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber,
-            copyrightText, description, excerpt, yearOfWork, width, height, medium, cost,
-            MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists!inner (*), galleries (*)`)
+            .select(`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber, 
+                      copyrightText, description, excerpt, yearOfWork, width, height, medium, cost, 
+                      MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists!inner (*), galleries!inner (*)` )
             .ilike('artists.nationality', `${nationality}%`)
             .order('title', { ascending: true })
 
@@ -201,7 +195,7 @@ router.get('/paintings/artists/country/:nationality', async (req, res) => {
     }
 });
 
-// Returns all the paintings for a given genre (use the genreId field)
+// Returns all the paintings for a given genre (use the genreId field) sorted by yearofWork
 router.get('/paintings/genre/:genreId', async (req, res) => {
     const { genreId } = req.params
 

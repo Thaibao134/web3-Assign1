@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { handleServerError, handleNotFoundError, handlePartialMatchError } = require('../helpers/errorHandlers');
+const { handleServerError, handleNotFoundError, handlePartialMatchError, handleMultipleYearError, handleYearError } = require('../helpers/errorHandlers');
 
 
 //  Returns all the artists
