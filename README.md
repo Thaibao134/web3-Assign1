@@ -1,7 +1,38 @@
 # COMP 4513 (Winter 2025)
 ### Assignment #1: Node, SQL (via supabase)
 
-**Please view `COMP4513 Assignment 1.pdf` for instructions**
+### Overview
+This repository contains code for querying art data. This assignment makes use of Node and Express to query different API's relating to galleries, paintings, genres, eras, and artists that are fetcherd from the art database (Supabase). The data is returned in JSON format.
+
+## Versions
+- **Node.js**: v22.11.0
+- **Express**: 4.21.2
+- **Supabase**: 2.48.1
+- **render**: For deployment - https://web3-assignment1.onrender.com/
+
+### Example:
+**Request**: /api/galleries/30
+
+**Response:**
+```json
+[
+  {
+    "galleryId": 30,
+    "galleryName": "Rijksmuseum",
+    "galleryNativeName": "Rijksmuseum",
+    "galleryCity": "Amsterdam",
+    "galleryAddress": "Museumstraat 1, 1071 XX",
+    "galleryCountry": "Netherlands",
+    "latitude": 52.36,
+    "longitude": 4.885278,
+    "galleryWebSite": "http://www.rijksmuseum.nl/",
+    "flickrPlaceId": "xfcEFYhWULKtjYI",
+    "yahooWoeId": 728410,
+    "googlePlaceId": "ChIJ5Ra7we4JxkcRhYVAaq5zQ9U"
+  }
+]
+
+
 
   | API Endpoint                                 | Description                                                                                               |
 |----------------------------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -29,3 +60,23 @@
 | /api/counts/genres                           | Returns the genre name and the number of paintings for each genre |
 | /api/counts/artists                          | Returns the artist name and the number of paintings for each artist |
 | /api/counts/topgenres/:ref                    | Returns the genre name and the number of paintings for each genre, for genres having over some set number of paintings|
+
+## Testing Links
+
+- [API /eras](https://web3-assignment1.onrender.com/api/eras)
+- [API /galleries](https://web3-assignment1.onrender.com/api/galleries)
+- [API /galleries/30](https://web3-assignment1.onrender.com/api/galleries/30)
+- [API /galleries/Calgary](https://web3-assignment1.onrender.com/api/galleries/Calgary)
+- [API /galleries/country/fra](https://web3-assignment1.onrender.com/api/galleries/country/fra)
+- [API /artists](https://web3-assignment1.onrender.com/api/artists)
+- [API /artists/12](https://web3-assignment1.onrender.com/api/artists/12)
+- [API /artists/1223423](https://web3-assignment1.onrender.com/api/artists/1223423)
+- [API /artists/search/ma](https://web3-assignment1.onrender.com/api/artists/search/ma)
+- [API /artists/search/mA](https://web3-assignment1.onrender.com/api/artists/search/mA)
+- [API /artists/country/fra](https://web3-assignment1.onrender.com/api/artists/country/fra)
+- [API /paintings](https://web3-assignment1.onrender.com/api/paintings)
+- [API /paintings/sort/year](https://web3-assignment1.onrender.com/api/paintings/sort/year)
+- [API /paintings/63](https://web3-assignment1.onrender.com/api/paintings/63)
+- [API /paintings/search/port](https://web3-assignment1.onrender.com/api/paintings/search/port)
+- [API /paintings/search/pORt](https://web3-assignment1.onrender.com/api/paintings/search/pORt)
+- [API /paintings/search/connolly](https://web3-assignment1.onrender.com/api/paintings/search/connolly)
