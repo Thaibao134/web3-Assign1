@@ -45,7 +45,7 @@ This repository contains code for querying art data using Node and Express. It i
 | /api/artists/search/:substring               | Returns the artists whose last name begins with the provided substring|
 | /api/artists/country/:substring              | Returns the artists whose nationality begins with the provided substring |
 | /api/paintings                               | Returns all the paintings  |
-| /api/paintings/sort/:title|:year              | Returns all the paintings, sorted by either title or year.                                           |
+| /api/paintings/sort/sortby              | Returns all the paintings, where sortby is either title or year.                                           |
 | /api/paintings/:ref                           | Returns just the specified painting                                             |
 | /api/paintings/search/:substring             | Returns the paintings whose title contains the provided substring |
 | /api/paintings/years/:start/:end              | Returns the paintings between two years |
