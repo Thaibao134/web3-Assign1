@@ -1,8 +1,8 @@
 # COMP 4513 (Winter 2025)
 ### Assignment #1: Node, SQL (via supabase)
 
-### <u>Overview</u>
-This repository contains code for querying art data. This assignment makes use of Node and Express to query different API's relating to galleries, paintings, genres, eras, and artists that are fetcherd from the art database (Supabase). The data is returned in JSON format.
+## <u>Overview</u>
+This repository contains code for querying art data using Node and Express. It interacts with APIs related to galleries, paintings, genres, eras, and artists, fetching data from the art database (Supabase). The data is returned in JSON format.
 
 ## <u>Versions</u>
 - **Node.js**: v22.11.0
@@ -79,3 +79,18 @@ This repository contains code for querying art data. This assignment makes use o
 - [api/paintings/search/port](https://web3-assignment1.onrender.com/api/paintings/search/port)
 - [api/paintings/search/pORt](https://web3-assignment1.onrender.com/api/paintings/search/pORt)
 - [api/paintings/search/connolly](https://web3-assignment1.onrender.com/api/paintings/search/connolly)
+- [api/paintings/years/1800/1850](https://web3-assignment1.onrender.com/api/paintings/years/1800/1850)
+- [api/paintings/galleries/5](https://web3-assignment1.onrender.com/api/paintings/galleries/5)
+- [api/paintings/artist/16](https://web3-assignment1.onrender.com/api/paintings/artist/16)
+- [api/paintings/artist/666](https://web3-assignment1.onrender.com/api/paintings/artist/666)
+- [api/paintings/artist/country/ital](https://web3-assignment1.onrender.com/api/paintings/artist/country/ital)
+- [api/genres](https://web3-assignment1.onrender.com/api/genres)
+- [api/genres/76](https://web3-assignment1.onrender.com/api/genres/76)
+- [api/genres/painting/408](https://web3-assignment1.onrender.com/api/genres/painting/408)
+- [api/genres/painting/jsdfhg](https://web3-assignment1.onrender.com/api/genres/painting/jsdfhg)
+- [api/paintings/genre/78](https://web3-assignment1.onrender.com/api/paintings/genre/78)
+- [api/paintings/era/2](https://web3-assignment1.onrender.com/api/paintings/era/2)
+- [api/counts/genres](https://web3-assignment1.onrender.com/api/counts/genres)
+- [api/counts/artists](https://web3-assignment1.onrender.com/api/counts/artists)
+- [api/counts/topgenres/20](https://web3-assignment1.onrender.com/api/counts/topgenres/20)
+- [api/counts/topgenres/2034958](https://web3-assignment1.onrender.com/api/counts/topgenres/2034958)
