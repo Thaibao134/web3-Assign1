@@ -51,7 +51,7 @@ This repository contains code for querying art data using Node and Express. It i
 | /api/paintings/years/:start/:end              | Returns the paintings between two years |
 | /api/paintings/galleries/:ref                | Returns all the paintings in a given gallery by GalleryId    |
 | /api/paintings/artist/:ref                   | Returns all the paintings by a given artist by ArtistId        |
-| /api/paintings/artists/country/:ref          | Returns all the paintings by artists whose nationality begins with the provided substring |
+| /api/paintings/artist/country/:ref          | Returns all the paintings by artists whose nationality begins with the provided substring |
 | /api/genres                                  | Returns all the genres |
 | /api/genres/:ref                              | Returns just the specified genre by GenreId                              |
 | /api/genres/painting/:ref                     | Returns the genres used in a given painting by PaintingId |
