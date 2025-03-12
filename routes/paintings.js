@@ -202,7 +202,7 @@ router.get('/paintings/genre/:genreId', async (req, res) => {
     try {
         const { data, error } = await req.app.get('supabase')
             .from('paintings')
-            .select(`paintingId, title, yearOfWork, imageFileName, paintinggenres!inner ()`)
+            .select(`paintingId, title, yearOfWork, imageFileName, paintinggenres!inner (), artists!inner (*)`)
             .eq('paintinggenres.genreId', genreId)
             .order('yearOfWork', {ascending: true})
         
