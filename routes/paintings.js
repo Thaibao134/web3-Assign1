@@ -7,6 +7,10 @@ const paintingColumns =`paintingId, imageFileName, title, shapeId, museumLink, a
                       copyrightText, description, excerpt, yearOfWork, width, height, medium, cost, 
                       MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, artists (*), galleries (*)` 
 
+const paintingColumnsNoArtist =`paintingId, imageFileName, title, shapeId, museumLink, accessionNumber, 
+            copyrightText, description, excerpt, yearOfWork, width, height, medium, cost, 
+            MSRP, googleLink, googleDescription, wikiLink, jsonAnnotations, galleries (*)` 
+
                       
 //  Returns all the paintings including all fields for artist and gallery sort by title
 router.get('/paintings', async (req, res) => {
@@ -202,10 +206,14 @@ router.get('/paintings/genre/:genreId', async (req, res) => {
     try {
         const { data, error } = await req.app.get('supabase')
             .from('paintings')
-            .select(`${paintingColumns}, paintinggenres!inner (), artists!inner (*)`)
+            .select(`${paintingColumnsNoArtist}, paintinggenres!inner (), artists!inner (*)`)
             // .select(`paintingId, title, yearOfWork, imageFileName, paintinggenres!inner (), artists!inner (*)`)
             .eq('paintinggenres.genreId', genreId)
             .order('yearOfWork', {ascending: true})
+
+
+
+            // .eq('artistId', artistId)
         
         if (data.length === 0) {
             return handleNotFoundError(res, 'paintings', 'genreId', genreId);
