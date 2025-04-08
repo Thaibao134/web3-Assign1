@@ -1,6 +1,9 @@
+const cors = require('cors');
 const express = require('express');
 const supa = require('@supabase/supabase-js');
 const app = express();
+
+app.use(cors());
 
 const supaUrl = process.env.supaUrl;
 const supaAnonKey = process.env.supaAnonKey;

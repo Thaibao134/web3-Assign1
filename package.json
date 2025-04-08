@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "w2025-assign1": "file:"
   }
